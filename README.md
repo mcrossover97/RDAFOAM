@@ -3,4 +3,8 @@ A ground-zero numerical reactive transport model for simulating rotating disk ex
 
 #testing a new branch for readme
 
+<<<<<<< HEAD
 #adding some features
+=======
+#g
+>>>>>>> main

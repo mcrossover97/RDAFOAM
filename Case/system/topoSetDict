@@ -1,0 +1,69 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    // Get both sides of ami
+    // ~~~~~~~~~~~~~~~~~~~~~
+
+    // Get all faces in cellSet
+ /*   {
+        name    AMI;
+        type    faceSet;
+        action  new;
+        source  patchToFace;
+        sourceInfo
+        {
+            name "AMI.*";
+        }
+    }
+*/
+ /*   {
+        name    AMI;
+        type    faceSet;
+        action  add;
+        source  patchToFace;
+        sourceInfo
+        {
+            name "BOTTOM.*";
+        }
+    } 
+*/
+
+  {
+    name    region1;
+    type    cellSet;
+    action  new;
+    source  boxToCell;
+    sourceInfo
+    {
+      box (-.04 -.04 -.01) (.04 .04 .08);
+    }
+  }
+
+  {
+    name    rotor;
+    type    cellZoneSet;
+    action  new;
+    source  setToCellZone;
+    sourceInfo
+    {
+      set region1;
+    }
+  }
+);
+
+// ************************************************************************* //

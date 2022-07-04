@@ -1,0 +1,133 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+libs
+(
+ "libgroovyBC.so"
+)
+
+application     pimpleDyMTransportFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime 40;
+
+deltaT          .002;
+
+writeControl    adjustableRunTime;
+
+writeInterval 10;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  13;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+adjustTimeStep  no;
+
+maxCo           0.5;
+
+functions
+{
+
+volFieldValue1
+{
+    type            volFieldValue;
+    libs            ("libfieldFunctionObjects.so");
+    fields          (HCl Ca);
+    writeFields     no; // yes | no
+    regionType      all;
+    operation       volAverage;
+
+
+    // Optional entries
+
+    // Scale factor
+    scaleFactor     1;
+        writeControl        timeStep;
+        writeInterval       20;
+
+    // Weight field - must be a scalar
+//    weightField     alpha.water;
+}
+
+
+surfaceFieldValue1
+{
+    type            surfaceFieldValue;
+    libs            ("libfieldFunctionObjects.so");
+    fields          (HCl Ca);
+    writeFields     no; // yes | no
+    regionType      patch;
+    name            RockFace;
+    operation       areaAverage;
+
+
+    // Optional entries
+
+    // Scale factor
+    scaleFactor     1;
+        writeControl        timeStep;
+        writeInterval       20;
+    // List of oriented fields
+//    orientedFields  (<field names>);
+
+    // Weight field - must be a scalar
+//    weightField     phi;
+
+    // Write the total area of the faces
+    writeArea       no;
+}
+
+ /*   sysCall
+    {
+        type systemCall;
+        functionObjectLibs ( "libutilityFunctionObjects.so" );
+        executeCalls 0();
+        endCalls 0();
+        writeCalls 1(" python ./RunTimeVarianceCheck.py ");
+        outputControl writeTime;
+        outputInterval 1;
+    }
+ 
+*/
+    abort1
+    {
+        type abort;
+        functionObjectLibs ( "libutilityFunctionObjects.so" );
+        action noWriteNow;//1.nextWrite 2.noWriteNow 3.writeNow
+        file "termination.flag";
+    }
+
+}
+
+
+// ************************************************************************* //

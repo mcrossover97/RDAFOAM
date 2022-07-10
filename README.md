@@ -9,7 +9,7 @@ The RDAFOAM simulator consists of two OpenFOAM solvers: "scalarTransportFoam " a
 To use the solvers, it is necessary to first install OpenFOAM: 
 https://openfoam.org/download/
 
-And its plugin, swak4Foam: 
+The concentration boundary condition is of the Robin type, which can be implemented in OpenFOAM using the “groovyBC” condition type. "groovyBC “ functionality is provided by the “swak4Foam” software package, which is an open-source software package developed for OpenFOAM: 
 https://openfoamwiki.net/index.php/Contrib/swak4Foam
 
 Mesh motion is controlled via the "dynamicMeshDict" located in the constant directory.
